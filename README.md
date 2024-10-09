@@ -3,7 +3,7 @@ This is a repo called HardLessonsDoneRight, basically I'm trying to make an AI c
 
 ## Project Road-Map:
 
-# Phase 1: Project Setup and Initial Foundation
+### Phase 1: Project Setup and Initial Foundation
 Task 1: Initialize GitHub Repository
 
     Set up a GitHub repository for HLDR.
@@ -54,7 +54,7 @@ Task 7: Implement Code Parsing and Analysis
     Subtask 7.2: Add support for common languages (e.g., Python, JavaScript).
     Subtask 7.3: Integrate parsing results into AI feedback loop.
 
-# Phase 3: Advanced Features & Enhancements
+### Phase 3: Advanced Features & Enhancements
 Task 8: Add Support for Multiple Programming Languages
 
     Subtask 8.1: Expand parsing and analysis to support additional languages (e.g., Java, C++).
@@ -65,7 +65,7 @@ Task 9: Add Real-Time Feedback
     Subtask 9.1: Add feature to send code in small chunks for real-time feedback.
     Subtask 9.2: Implement WebSocket push notifications for immediate suggestions.
 
-# Phase 4: Collaboration & Open Source Development
+### Phase 4: Collaboration & Open Source Development
 Task 10: Prepare for Open Source Contribution
 
     Subtask 10.1: Write detailed contribution guidelines (how to set up the project, coding standards).
@@ -79,7 +79,7 @@ Task 11: Grow the Project
     Subtask 11.2: Create a project board for managing tasks (e.g., GitHub Projects, Trello).
     Subtask 11.3: Host a live demo or screencast showing HLDR in action to attract developers.
 
-# Phase 5: Testing and Polishing
+### Phase 5: Testing and Polishing
 Task 12: Test and Debug Each Component
 
     Subtask 12.1: Test the CLI in various environments (Mac, Linux, Windows).
