@@ -40,7 +40,7 @@ Task 5: Build the VS Code Extension (HLDR for VS Code)
     Subtask 5.3: Integrate WebSocket communication to receive suggestions.
     Subtask 5.4: Display suggestions in terminal or as notifications.
 
- # Phase 2: AI Code Review Logic
+ ### Phase 2: AI Code Review Logic
 Task 6: Implement Basic AI Code Review Logic
 
     Subtask 6.1: Research and select existing AI/code review libraries (e.g., GPT, OpenAI Codex).
