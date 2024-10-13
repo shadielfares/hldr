@@ -8,11 +8,13 @@ Task 1: Initialize GitHub Repository
     
     Set up a GitHub repository for HLDR
     Ensure proper documentation (README, contribution guidelines).
-    Set up basic folder structure for CLI and WebSocket server.~~
+    Set up basic folder structure for CLI and WebSocket server.
 
     **Completed**
 
 Task 2: Build the WebSocket Server (Backend)
+
+I realized, I don't have to make the websocket in Node.js. I can just use Python and FastAPI to perform the same functionality.
 
     Subtask 2.1: Create basic WebSocket server in Node.js.
         Set up ws library.
