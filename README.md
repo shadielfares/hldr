@@ -5,10 +5,10 @@ This is a repo called HardLessonsDoneRight, basically I'm trying to make an AI c
 
 ### Phase 1: Project Setup and Initial Foundation
 Task 1: Initialize GitHub Repository
-
-    Set up a GitHub repository for HLDR.
+    ~~
+    Set up a GitHub repository for HLDR
     Ensure proper documentation (README, contribution guidelines).
-    Set up basic folder structure for CLI and WebSocket server.
+    Set up basic folder structure for CLI and WebSocket server.~~
 
 Task 2: Build the WebSocket Server (Backend)
 
