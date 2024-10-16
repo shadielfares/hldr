@@ -23,6 +23,8 @@ I realized, I don't have to make the websocket in Node.js. I can just use Python
     Subtask 2.3: Create placeholder for AI code review logic (to be implemented later).
     Subtask 2.4: Implement basic response/suggestion mechanism (e.g., send dummy suggestion).
 
+    **Completed**
+
 Task 3: Create CLI Tool (For Vim & Terminal Users)
 
     Subtask 3.1: Set up CLI tool using Node.js or Python.
