@@ -32,6 +32,9 @@ Task 3: Create CLI Tool (For Vim & Terminal Users)
     Subtask 3.3: Connect CLI to WebSocket server to send code snippets.
     Subtask 3.4: Display WebSocket server's responses in the terminal.
 
+        **Completed**
+
+
 Task 4: Build the Vim Plugin (HLDR for Vim)
 
     Subtask 4.1: Create basic Vim/Neovim plugin structure.
