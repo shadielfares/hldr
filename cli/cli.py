@@ -1,30 +1,37 @@
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
+
+from app.main import lint_code
+
+import time
 import click
-import asyncio
-from client.client import live_analyze_client
-@click.group()
-def cli():
-    """HLDR Command Line Interface"""
-    pass
 
-@click.command()
-def start():
-    """Start HLDR analysis"""
-    click.echo("Starting HLDR...")
-
-@click.command()
-@click.argument('filename', type=click.Path(exists=True))
-def check(filename):
-    """Check code by sending to WebSocket server"""
-    click.echo(f"Checking file: {filename}")
+class ChangeHandler(FileSystemEventHandler):
+    def __init__(self, file_to_watch):
+        self.file_to_watch = file_to_watch
     
-    with open(filename, 'r') as file:
-        code = file.read()
+    def on_modified(self, event):
+        if event.src_path.endswith(self.file_to_watch):
+            print(f'{self.file_to_watch} has been modified, running analysis...')
+            lint_code(self.file_to_watch)
 
-    # Call the WebSocket client to analyze the code
-    asyncio.run(live_analyze_client(code))
+@click.command()
+@click.argument('file_to_watch', default='solution.py', type=click.Path(exists=True))
+def monitor_file(file_to_watch):
+    """Monitor the specified Python file for changes."""
+    event_handler = ChangeHandler(file_to_watch)
+    observer = Observer()
+    observer.schedule(event_handler, path='.', recursive=False)
+    observer.start()
+    
+    print(f"Monitoring changes to {file_to_watch}... (Press Ctrl+C to stop)")
 
-cli.add_command(start)
-cli.add_command(check)
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join()
 
 if __name__ == "__main__":
-    cli()
+    monitor_file()

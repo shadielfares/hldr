@@ -1,39 +1,40 @@
 # Packages
-from fastapi import FastAPI, WebSocket
-import asyncio
-from utils.linting import lint_code
+import subprocess
 from utils.analysis import analyze_code
 
-app = FastAPI()
 
-clients = {}
+# Runs through linkter and provides error if there
+def lint_code(file_path):
+    """Function to run linter, then code analysis."""
+    # Step 2: Linter Check
+    lint_result = subprocess.run(['pylint', file_path], capture_output=True, text=True)
+    # if lint_result.returncode != 0.00:
+    #     print(f"Linter Error: \n{lint_result.stdout}")
+    #     return
+    print("Linter passed, running the code...")
 
-# Websocket Endpoint
-@app.websocket("/ws/live-analyze")
-# Asynchronous call awaits only for changes, so it is non-polling and therefore non-blocking.
-async def live_analyze(websocket: WebSocket):
-    await websocket.accept()
-    clients[websocket] = {"last_keystroke": asyncio.get_event_loop().time(), "code": ""}
+    # Step 3: Run Code
+    run_code_and_give_feedback(file_path)
+
+def run_code_and_give_feedback(file_path):
+    """Run the code and provide feedback based on output."""
     try:
-        while True:
-            # Waits for code, measures when the last keystroke was entered 
-            code = await websocket.receive_text()
-            clients[websocket]["last_keystroke"] = asyncio.get_event_loop().time()
-            clients[websocket]["code"] = code
-            #  
-            while True:
-                elapsed = asyncio.get_event_loop().time() - clients[websocket]["last_keystroke"]
-                if elapsed >= 6:
-                    # Checks return value from the lint_code Function
-                    if lint_code(clients[websocket]["code"]):
-                        await websocket.send_text("Linting errors found.")
-                    else:
-                        # This will return the CodeQL Suggestions
-                        suggestions = analyze_code(clients[websocket]["code"])
-                        await websocket.send_json({"status": "success", "suggestions": suggestions})
-                    break
-                await asyncio.sleep(1)
-    except:
-        # Will remove the clients dictonary if it exists, if it doesn't just returns None. Then closes the websocket
-        clients.pop(websocket, None)
-        await websocket.close()
+        result = subprocess.run(['python', file_path], capture_output=True, text=True)
+        print(f"Code Output: \n{result.stdout}")
+        # if result.returncode == 0:
+        print(f"Analysis feedback: \n{analyze_file(file_path)}")
+        # else:
+            # print("Runtime error occurred.")
+    except Exception as e:
+        print(f"Error running the code: {e}")
+    
+# Reads through the file and gets all code inside of it
+def analyze_file(file_path):
+    try:
+        with open(file_path, 'r') as file:
+            code = file.read()
+        return analyze_code(code)
+    except FileNotFoundError:
+        return [f"File not found: {file_path}"]
+    except Exception as e:
+        return [f"Error reading file: {e}"]
