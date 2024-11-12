@@ -1,6 +1,8 @@
 # hldr
 This is a repo called HardLessonsDoneRight, basically I'm trying to make an AI coding mentor that actively helps you become a better programmer without spoon-feeding you info.
 
+PLEASE REACH OUT IF U WANT TO HELP WITH THIS PROJECT
+
 ## Project Road-Map:
 
 ### Phase 1: Project Setup and Initial Foundation
