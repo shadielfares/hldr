@@ -38,11 +38,18 @@ Task 3: Create CLI Tool (For Vim & Terminal Users)
 
 
 Task 4: Build the Vim Plugin (HLDR for Vim)
+Note: No need for 4.2 or 4.3 as no longer need Webscoket and suggestoins are made once you save it, this is good for 2 reasons:
+1.  Saves money for the amount of requests made to OpenAI Model
+2.  Less bothersome as you can articulate code and thought process - only receiving feedback when you want and not have the feedback bothering you on every change/letter typed to your file.
 
-    Subtask 4.1: Create basic Vim/Neovim plugin structure.
-    Subtask 4.2: Add event listener for buffer changes (trigger on code updates).
-    Subtask 4.3: Send code snippets to the WebSocket server via CLI.
+```
+   Subtask 4.1: Create basic Vim/Neovim plugin structure.
+   ~~Subtask 4.2: Add event listener for buffer changes (trigger on code updates).~~
+    ~~Subtask 4.3: Send code snippets to the WebSocket server via CLI.~~
     Subtask 4.4: Display suggestions within Vim (either in terminal or through split window).
+
+  **Completed** the main step of 4.4, so now you type, and get good feedback.
+```
 
 Task 5: Build the VS Code Extension (HLDR for VS Code)
 
@@ -53,11 +60,14 @@ Task 5: Build the VS Code Extension (HLDR for VS Code)
 
  ### Phase 2: AI Code Review Logic
 Task 6: Implement Basic AI Code Review Logic
-
+```
     Subtask 6.1: Research and select existing AI/code review libraries (e.g., GPT, OpenAI Codex).
     Subtask 6.2: Implement basic AI model or API integration for recognizing patterns like nested loops.
     Subtask 6.3: Design a system to handle common coding patterns (e.g., brute force vs optimized solutions).
-    Subtask 6.4: Connect AI suggestions to WebSocket server output.
+~~Subtask 6.4: Connect AI suggestions to WebSocket server output.~~ - No longer need because we got rid of websocket
+
+**Completed**
+```
 
 Task 7: Implement Code Parsing and Analysis
 
@@ -65,17 +75,23 @@ Task 7: Implement Code Parsing and Analysis
     Subtask 7.2: Add support for common languages (e.g., Python, JavaScript).
     Subtask 7.3: Integrate parsing results into AI feedback loop.
 
+**Completed with Task 6**
+
 ### Phase 3: Advanced Features & Enhancements
 Task 8: Add Support for Multiple Programming Languages
 
     Subtask 8.1: Expand parsing and analysis to support additional languages (e.g., Java, C++).
     Subtask 8.2: Tailor AI suggestions based on language syntax and conventions.
 
+
+
 Task 9: Add Real-Time Feedback
+```
+~~Subtask 9.1: Add feature to send code in small chunks for real-time feedback.~~ Real-time feedback doesn't actually help all that much, as it is visually cluttering and deters from real learning.
+    ~~Subtask 9.2: Implement WebSocket push notifications for immediate suggestions.~~ No more websocket...
 
-    Subtask 9.1: Add feature to send code in small chunks for real-time feedback.
-    Subtask 9.2: Implement WebSocket push notifications for immediate suggestions.
-
+**Completed**
+```
 ### Phase 4: Collaboration & Open Source Development
 Task 10: Prepare for Open Source Contribution
 
