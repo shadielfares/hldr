@@ -17,7 +17,7 @@ class ChangeHandler(FileSystemEventHandler):
             # Trigger linting only if sufficient time has passed since the last modification
             if current_time - self.last_modified_time > 1:  # 1 second debounce
                 print(f'{self.file_to_watch} has been modified, running analysis...')
-                lint_code(self.file_to_watch)
+                main(self.file_to_watch)
                 self.last_modified_time = current_time
 
 @click.command()
