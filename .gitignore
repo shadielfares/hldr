@@ -1,0 +1,10 @@
+.env
+lib/
+lib64/
+bin/
+share/
+pyvenv.cfg
+node_modules/
+__pycache__/
+package-lock.json
+package.json
