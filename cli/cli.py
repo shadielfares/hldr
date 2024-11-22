@@ -1,7 +1,7 @@
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-from app.main import lint_code
+from app.main import main
 
 import time
 import click
