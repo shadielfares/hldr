@@ -1,11 +1,26 @@
 # hldr
 This is a repo called HardLessonsDoneRight, basically I'm trying to make an AI coding mentor that actively helps you become a better programmer without spoon-feeding you info.
 
-PLEASE REACH OUT IF U WANT TO HELP WITH THIS PROJECT
+### 🌟 Why I Based the Guide Around Codespaces?
 
+**Simple reasons:**
+1.  It was the easiest way to get an MVP out once my CLI was working.  
+2.  I want developers to explore **GitHub Codespaces**, as I find its cloud capabilities aren't widely known.  
+3.  If people find this idea cool and want to support it, they can fork the repo and make PRs—thanks to a well-defined and tracked roadmap.  
+
+---
+
+### 🎥 Tutorial
+
+_Click it... click the picture 👀_
+
+[![📹 Banner for Video](./HLDR-png.png)](https://youtu.be/sRDdKJmxxNE)
+
+---
 ## Project Road-Map:
 
 ### Phase 1: Project Setup and Initial Foundation
+
 Task 1: Initialize GitHub Repository
     
     Set up a GitHub repository for HLDR
@@ -58,6 +73,8 @@ Task 5: Build the VS Code Extension (HLDR for VS Code)
     Subtask 5.3: Integrate WebSocket communication to receive suggestions.
     Subtask 5.4: Display suggestions in terminal or as notifications.
 
+    NOTE: Only 5.1, 5.2 eligble for community!!
+
  ### Phase 2: AI Code Review Logic
 Task 6: Implement Basic AI Code Review Logic
 ```
@@ -75,6 +92,8 @@ Task 7: Implement Code Parsing and Analysis
     Subtask 7.2: Add support for common languages (e.g., Python, JavaScript).
     Subtask 7.3: Integrate parsing results into AI feedback loop.
 
+    NOTE: Community ticket.
+
 **Completed with Task 6**
 
 ### Phase 3: Advanced Features & Enhancements
@@ -83,7 +102,7 @@ Task 8: Add Support for Multiple Programming Languages
     Subtask 8.1: Expand parsing and analysis to support additional languages (e.g., Java, C++).
     Subtask 8.2: Tailor AI suggestions based on language syntax and conventions.
 
-
+    ...NOTE: If community wants this they can pick it up, but model does this natively.
 
 Task 9: Add Real-Time Feedback
 ```
