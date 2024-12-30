@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 12px;
+}
+
+.result {
+  font-size: 12px;
+  line-height: 16px;
+  padding: 16px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  border-radius: 10px;
+  background: #494848;
+  animation: fade-in 0.5s;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
