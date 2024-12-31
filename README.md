@@ -1,4 +1,4 @@
-# hldr README
+<img src="https://github.com/shadielfares/hldr/blob/hldrV2/media/hldr.png?raw=true" alt="alt text" width="25%" />
 
 An AI-driven coding mentor designed to enhance programming skills by providing guidance without directly supplying answers.
 
