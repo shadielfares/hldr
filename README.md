@@ -1,5 +1,4 @@
-# hldr README
-![alt text]('https://github.com/shadielfares/hldr/blob/hldrV2/media/hldr.png?raw=true')
+<img src="https://github.com/shadielfares/hldr/blob/hldrV2/media/hldr.png?raw=true" alt="alt text" width="25%" />
 
 This is the README for your extension "hldr". After writing up a brief description, we recommend including the following sections.
 
