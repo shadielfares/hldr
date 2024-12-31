@@ -1,46 +1,53 @@
-<img src="https://github.com/shadielfares/hldr/blob/hldrV2/media/hldr.png?raw=true" alt="alt text" width="25%" />
+# HLDR: The AI-Powered Coding Mentor
 
-An AI-driven coding mentor designed to enhance programming skills by providing guidance without directly supplying answers.
-
-Integrated straight into your editor, it reduces the back-and-forth troubles of utilizing web-based GenAI Transformers (i.e OpenAI's ChatGPT).
+## Description
+HLDR is an AI-driven coding mentor designed to elevate your programming skills through contextual guidance, all without directly supplying answers. Seamlessly integrated into your editor, it eliminates the hassle of switching between web-based GenAI tools like OpenAI's ChatGPT and your coding environment.
 
 ## Features
 
-Will include later.
+1. **Universal Theme Support**  
+   HLDR works seamlessly with any editor theme.
+
+2. **Debouncing for API Requests**  
+   - Optimized for environments with autosave enabled.
+
+3. **Enhanced Markdown Formatting**  
+   - Syntax highlighting  
+   - Bold text  
+   - Code snippets (note: due to the nature of the extension, code examples are not provided directly).
 
 ## Requirements
-
-There should be no requirements or dependencies.
+HLDR is designed to be dependency-free. No additional installations or configurations are required.
 
 ## Extension Settings
-
-This extension has NO extension settings.
+This extension does not include any configurable settings.
 
 ## Known Issues
-
-As of release 1.0.0, there is no known issues.
+As of version 1.0.0, there are no known issues.
 
 ## Release Notes
-
-Users appreciate release notes as you update your extension.
+Stay updated with HLDR's release notes as new features and improvements are added.
 
 ### 1.0.0
-
-Inital release to Github Codespaces. No one used it...
+- Initial release for GitHub Codespaces.
+- Early adopters welcome (no usage statistics yet).
 
 ### 1.0.1
+- Now available on the Visual Studio Code Marketplace.  
+- Upcoming features include:  
+  - A history of coding insights provided by the mentor.  
+  - The ability to analyze specific sections of code in future updates.
 
-Now avaliable on VSCode store.
-Improvements to be made are:
+## Compatibility
+HLDR is compatible with Visual Studio Code versions 1.96.0 or later. It is not compatible with Visual Studio IDE or Visual Studio Insiders.
 
-- History of insights in coding mentor.
-- Include debouncing function, so that there is a delay between when API requests are made.
-
----
+```json
+"vscode": "^1.96.0"
+```
 
 ## HLDR Creator and Technical Study
+Discover more about HLDR and its creator by visiting:  
+[https://shadielfares.com](https://shadielfares.com)
 
-If you'd like to explore more of HLDR or its creator, check out:
-https://shadielfares.com
+**Enjoy coding with HLDR!**
 
-**Enjoy!**

@@ -41,27 +41,48 @@ exports.activate = activate;
 exports.deactivate = deactivate;
 const vscode = __importStar(require("vscode"));
 const axios_1 = __importDefault(require("axios"));
+const crypto = __importStar(require("crypto"));
 function activate(context) {
-    // Creating Inital Instance & Adding Empty Instance to WebView
     const provider = new HLDRViewProvider(context.extensionUri);
     context.subscriptions.push(vscode.window.registerWebviewViewProvider(HLDRViewProvider.viewType, provider));
-    context.subscriptions.push(vscode.workspace.onDidSaveTextDocument(async (document) => {
-        const fileContent = { snippet: document.getText() };
-        try {
-            // Test with Gemini API
-            const response = await axios_1.default.post('https://backend-floral-leaf-1548.fly.dev/analyze2', fileContent, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            // Updating the WebView with the response (had this appended before: .replace(/'/g, '`'))
-            const analysisResult = response.data;
-            provider.updateContent(analysisResult);
+    // Debounce implementation
+    let debounceTimer = null;
+    // Last hashed content
+    let lastContentHash = '';
+    // Function to hash content
+    const hashContent = (content) => {
+        return crypto.createHash('sha256').update(content).digest('hex');
+    };
+    context.subscriptions.push(vscode.workspace.onDidSaveTextDocument((document) => {
+        provider.updateContent("Retrieving Analysis...");
+        // Debounce function
+        if (debounceTimer) {
+            clearTimeout(debounceTimer);
         }
-        catch (error) {
-            console.error('Error connecting to the backend endpoint', error);
-            provider.updateContent('Error: Unable to retrieve analysis.');
-        }
+        debounceTimer = setTimeout(async () => {
+            const fileContent = document.getText();
+            const currentHash = hashContent(fileContent);
+            // Skip analysis if content hasn't changed
+            if (currentHash === lastContentHash) {
+                provider.updateContent('Content has not changed; skipping analysis.');
+                return;
+            }
+            lastContentHash = currentHash; // Update the last hash
+            const filePayload = { snippet: fileContent };
+            try {
+                const response = await axios_1.default.post('https://backend-floral-leaf-1548.fly.dev/analyze2', filePayload, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+                const analysisResult = response.data;
+                provider.updateContent(analysisResult);
+            }
+            catch (error) {
+                console.error('Error connecting to the backend endpoint:', error);
+                provider.updateContent('Error: Unable to retrieve analysis.');
+            }
+        }, 1500); // Debounce delay in milliseconds
     }));
 }
 function deactivate() { }
@@ -69,18 +90,15 @@ class HLDRViewProvider {
     _extensionUri;
     static viewType = 'hldr.view';
     _view;
-    _analysisResult = "Awaiting Analysis..."; //Default Value upon load
-    // Initially creating it with the current contents of a file.
+    _analysisResult = 'Awaiting Analysis...'; // Default value upon load
     constructor(_extensionUri) {
         this._extensionUri = _extensionUri;
     }
-    // Specify the function is of type void
     resolveWebviewView(webviewView) {
         this._view = webviewView;
         webviewView.webview.options = {
             enableScripts: true,
-            // Restrict the webview to only load resources from the extension's directory
-            localResourceRoots: [this._extensionUri]
+            localResourceRoots: [this._extensionUri],
         };
         if (this._view) {
             this._view.webview.html = this._getHtmlForWebview(this._view.webview);
@@ -95,7 +113,7 @@ class HLDRViewProvider {
         }
     }
     _getHtmlForWebview(webview) {
-        const analysisResult = this._analysisResult; //Accessing internal variable
+        const analysisResult = this._analysisResult;
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'script.js'));
         const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css'));
         const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css'));
@@ -105,7 +123,6 @@ class HLDRViewProvider {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <!-- This is to only import styling and scripts from our extension directory -->
                 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}' https://cdn.jsdelivr.net;">
 
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -120,7 +137,6 @@ class HLDRViewProvider {
             <body>
                 <div id="history" class="result" data-analysis-result="${analysisResult}"></div>
                 <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
-                
             </body>
             </html>
         `;

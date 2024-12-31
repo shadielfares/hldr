@@ -1,5 +1,3 @@
-import { marked } from "../node_modules/marked/lib/marked.esm.js";
-
 const md = window.markdownit();
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,7 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // If you want to render the content using the `marked` library, we can process it here
   const parsedHTML = md.render(analysisResult); // This will convert the Markdown to HTML
   const escapedContent = parsedHTML
     .replace(/"/g, "&quot;")
@@ -24,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Typewriter effect function to display text gradually
   function typewriterEffect(text) {
     let index = 0;
-    const typingSpeed = 50; // Adjust the typing speed (milliseconds between characters)
+    const typingSpeed = 25; // Adjust the typing speed (milliseconds between characters)
 
     function typeChar() {
       if (index < text.length) {
@@ -39,6 +36,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add a small delay before starting the typewriter effect for the content
   setTimeout(() => {
-    typewriterEffect(escapedContent); // Pass parsed HTML (with Markdown rendered)
-  }, 1000); // Adjust the delay as necessary
+    typewriterEffect(escapedContent);
+  }, 1000);
 });

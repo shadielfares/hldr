@@ -1,34 +1,66 @@
 import * as vscode from 'vscode';
 import axios from 'axios';
+import * as crypto from 'crypto';
 
 export function activate(context: vscode.ExtensionContext) {
-
-    // Creating Inital Instance & Adding Empty Instance to WebView
     const provider = new HLDRViewProvider(context.extensionUri);
     context.subscriptions.push(
         vscode.window.registerWebviewViewProvider(HLDRViewProvider.viewType, provider)
     );
 
+    // Debounce implementation
+    let debounceTimer: NodeJS.Timeout | null = null;
+
+    // Last hashed content
+    let lastContentHash: string = '';
+
+    // Function to hash content
+    const hashContent = (content: string): string => {
+        return crypto.createHash('sha256').update(content).digest('hex');
+    };
+
     context.subscriptions.push(
-        vscode.workspace.onDidSaveTextDocument(async (document) => {
-            const fileContent = { snippet: document.getText() };
+        vscode.workspace.onDidSaveTextDocument((document) => {
+            provider.updateContent("Retrieving Analysis...");
 
-            try {
-                // Test with Gemini API
-                const response = await axios.post('https://backend-floral-leaf-1548.fly.dev/analyze2', fileContent, {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-
-                // Updating the WebView with the response (had this appended before: .replace(/'/g, '`'))
-                const analysisResult = response.data;
-                provider.updateContent(analysisResult);
-            } catch (error: any) {
-                console.error('Error connecting to the backend endpoint', error);
-                provider.updateContent('Error: Unable to retrieve analysis.');
+            // Debounce function
+            if (debounceTimer) {
+                clearTimeout(debounceTimer);
             }
 
+            debounceTimer = setTimeout(async () => {
+                const fileContent = document.getText();
+                const currentHash = hashContent(fileContent);
+
+                // Skip analysis if content hasn't changed
+                if (currentHash === lastContentHash) {
+                    provider.updateContent('Content has not changed; skipping analysis.');
+                    return;
+                }
+
+                lastContentHash = currentHash; // Update the last hash
+
+                const filePayload = { snippet: fileContent };
+
+
+                try {
+                    const response = await axios.post(
+                        'https://backend-floral-leaf-1548.fly.dev/analyze2',
+                        filePayload,
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                        }
+                    );
+
+                    const analysisResult = response.data;
+                    provider.updateContent(analysisResult);
+                } catch (error: any) {
+                    console.error('Error connecting to the backend endpoint:', error);
+                    provider.updateContent('Error: Unable to retrieve analysis.');
+                }
+            }, 1500); // Debounce delay in milliseconds
         })
     );
 }
@@ -36,29 +68,23 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 export class HLDRViewProvider implements vscode.WebviewViewProvider {
-
     public static readonly viewType = 'hldr.view';
     private _view?: vscode.WebviewView;
-    private _analysisResult: string = "Awaiting Analysis..."; //Default Value upon load
+    private _analysisResult: string = 'Awaiting Analysis...'; // Default value upon load
 
-    // Initially creating it with the current contents of a file.
-    constructor(private readonly _extensionUri: vscode.Uri,) { }
+    constructor(private readonly _extensionUri: vscode.Uri) { }
 
-    // Specify the function is of type void
     public resolveWebviewView(webviewView: vscode.WebviewView) {
-
         this._view = webviewView;
 
         webviewView.webview.options = {
             enableScripts: true,
-            // Restrict the webview to only load resources from the extension's directory
-            localResourceRoots: [this._extensionUri]
+            localResourceRoots: [this._extensionUri],
         };
 
         if (this._view) {
             this._view.webview.html = this._getHtmlForWebview(this._view.webview);
         }
-
     }
 
     public updateContent(newAnalysisResult: any) {
@@ -71,7 +97,7 @@ export class HLDRViewProvider implements vscode.WebviewViewProvider {
     }
 
     private _getHtmlForWebview(webview: vscode.Webview): string {
-        const analysisResult = this._analysisResult; //Accessing internal variable
+        const analysisResult = this._analysisResult;
 
         const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'script.js'));
 
@@ -85,7 +111,6 @@ export class HLDRViewProvider implements vscode.WebviewViewProvider {
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <!-- This is to only import styling and scripts from our extension directory -->
                 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}' https://cdn.jsdelivr.net;">
 
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -100,7 +125,6 @@ export class HLDRViewProvider implements vscode.WebviewViewProvider {
             <body>
                 <div id="history" class="result" data-analysis-result="${analysisResult}"></div>
                 <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
-                
             </body>
             </html>
         `;
