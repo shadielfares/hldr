@@ -8,11 +8,15 @@ body {
   font-size: 12px;
   line-height: 16px;
   padding: 16px;
-  white-space: pre-wrap;
   word-wrap: break-word;
   border-radius: 10px;
-  background: #494848;
+  background: var(--vscode-editor-background);
   animation: fade-in 0.5s;
+}
+
+.markdown-body p {
+  margin-bottom: 1em;
+  margin-top: 1em;
 }
 
 @keyframes fade-in {

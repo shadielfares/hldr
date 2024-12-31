@@ -1,3 +1,7 @@
+import { marked } from "../node_modules/marked/lib/marked.esm.js";
+
+const md = window.markdownit();
+
 document.addEventListener("DOMContentLoaded", () => {
   const historyElement = document.getElementById("history");
   if (!historyElement) {
@@ -12,17 +16,19 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // Remove leading and trailing quotes, then replace \\n with actual newlines
-  const cleanedResult = analysisResult.replace(/^"|"$/g, ""); // Remove leading and trailing quotes
-  console.log("Cleaned Result: ", cleanedResult);
-  // Typewriter effect function
+  // If you want to render the content using the `marked` library, we can process it here
+  const parsedHTML = md.render(analysisResult); // This will convert the Markdown to HTML
+  const escapedContent = parsedHTML
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;"); // Escape single quotes
+  // Typewriter effect function to display text gradually
   function typewriterEffect(text) {
     let index = 0;
     const typingSpeed = 50; // Adjust the typing speed (milliseconds between characters)
 
     function typeChar() {
       if (index < text.length) {
-        historyElement.textContent += text[index];
+        historyElement.innerHTML = text.slice(0, index + 1); // Use innerHTML
         index++;
         setTimeout(typeChar, typingSpeed);
       }
@@ -33,6 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Add a small delay before starting the typewriter effect for the content
   setTimeout(() => {
-    typewriterEffect(cleanedResult);
+    typewriterEffect(escapedContent); // Pass parsed HTML (with Markdown rendered)
   }, 1000); // Adjust the delay as necessary
 });
