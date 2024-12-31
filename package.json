@@ -2,7 +2,12 @@
   "name": "hldr-extension",
   "displayName": "HLDR Extension",
   "description": "An AI-driven coding mentor designed to enhance programming skills by providing guidance without directly supplying answers.",
+  "publisher": "ShadiEl-Fares",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shadielfares/hldr.git"
+  },
   "engines": {
     "vscode": "^1.96.0"
   },
