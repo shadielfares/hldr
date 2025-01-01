@@ -68,50 +68,59 @@ export function activate(context: vscode.ExtensionContext) {
 export function deactivate() { }
 
 export class HLDRViewProvider implements vscode.WebviewViewProvider {
-    public static readonly viewType = 'hldr.view';
-    private _view?: vscode.WebviewView;
-    private _analysisResult: string = 'Awaiting Analysis...'; // Default value upon load
+	public static readonly viewType = "hldr.view";
+	private _view?: vscode.WebviewView;
+	private _analysisResults?: String[] = []; // Default value upon load
 
-    constructor(private readonly _extensionUri: vscode.Uri) { }
+	constructor(private readonly _extensionUri: vscode.Uri) {}
 
-    public resolveWebviewView(webviewView: vscode.WebviewView) {
-        this._view = webviewView;
+	public resolveWebviewView(webviewView: vscode.WebviewView) {
+		this._view = webviewView;
 
-        webviewView.webview.options = {
-            enableScripts: true,
-            localResourceRoots: [this._extensionUri],
-        };
+		webviewView.webview.options = {
+			enableScripts: true,
+			localResourceRoots: [this._extensionUri],
+		};
 
-        if (this._view) {
-            this._view.webview.html = this._getHtmlForWebview(this._view.webview);
-        }
-    }
+		if (this._view) {
+			this._view.webview.html = this._getHtmlForWebview(this._view.webview);
+		}
+	}
 
-    public updateContent(newAnalysisResult: any) {
-        if (this._analysisResult !== newAnalysisResult) {
-            this._analysisResult = newAnalysisResult;
-            if (this._view) {
-                this._view.webview.html = this._getHtmlForWebview(this._view.webview);
-            }
-        }
-    }
+	public updateContent(newAnalysisResult: any) {
+		if (this._analysisResults?.includes(newAnalysisResult)) {
+			this._analysisResults.push(newAnalysisResult);
+		}
 
-    private _getHtmlForWebview(webview: vscode.Webview): string {
-        const analysisResult = this._analysisResult;
+		if (this._view) {
+			this._view.webview.html = this._getHtmlForWebview(this._view.webview);
+		}
+	}
 
-        const scriptUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'script.js'));
+	private _getHtmlForWebview(webview: vscode.Webview): string {
+		const analysisResults = this._analysisResults;
 
-        const styleResetUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'reset.css'));
-        const styleMainUri = webview.asWebviewUri(vscode.Uri.joinPath(this._extensionUri, 'media', 'main.css'));
+		const scriptUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "script.js")
+		);
 
-        const nonce = getNonce();
+		const styleResetUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "reset.css")
+		);
+		const styleMainUri = webview.asWebviewUri(
+			vscode.Uri.joinPath(this._extensionUri, "media", "main.css")
+		);
 
-        return `
+		const nonce = getNonce();
+
+		return `
             <!DOCTYPE html>
             <html lang="en">
             <head>
                 <meta charset="UTF-8">
-                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${webview.cspSource}; script-src 'nonce-${nonce}' https://cdn.jsdelivr.net;">
+                <meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src ${
+									webview.cspSource
+								}; script-src 'nonce-${nonce}' https://cdn.jsdelivr.net;">
 
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -123,12 +132,21 @@ export class HLDRViewProvider implements vscode.WebviewViewProvider {
                 <title>H.L.D.R Code Mentor</title>
             </head>
             <body>
-                <div id="history" class="result" data-analysis-result="${analysisResult}"></div>
+                <!-- loop through analysis results -->
+                <div id="analysis-results">
+                    ${analysisResults
+											?.map(
+												(index, result) =>
+													`<div id="history${index} class="result" data-analysis-result="${result}"></div>`
+											)
+											.join("")}
+
+                </div>
                 <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
             </body>
             </html>
         `;
-    }
+	}
 }
 
 function getNonce(): string {
