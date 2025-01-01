@@ -1,5 +1,9 @@
 # HLDR: The AI-Powered Coding Mentor
 
+## Demo
+
+[![Watch the video](https://raw.githubusercontent.com/shadielfares/hldr/main/HLDR-png.png)](https://raw.githubusercontent.com/shadielfares/hldr/hldrV2/media/hldrdemo.mp4)
+
 ## Description
 HLDR is an AI-driven coding mentor designed to elevate your programming skills through contextual guidance, all without directly supplying answers. Seamlessly integrated into your editor, it eliminates the hassle of switching between web-based GenAI tools like OpenAI's ChatGPT and your coding environment.
 
