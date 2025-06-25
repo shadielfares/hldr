@@ -1,5 +1,10 @@
 # HLDR: The AI-Powered Coding Mentor
 
+Note: 
+
+This was a fun project, it is still publicly avaliable on VSCode feel free to fork it and make a PR for any issues.
+I will still see them and test them out. 
+
 ## Demo
 
 https://github.com/user-attachments/assets/00b14e8a-a07f-48c4-9165-76f59a75b752
