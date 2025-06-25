@@ -3,7 +3,7 @@
 Note: 
 
 This was a fun project, it is still publicly avaliable on VSCode feel free to fork it and make a PR for any issues.
-I will still see them and test them out. 
+I will still see them and test them out, however I am archiving this today.
 
 ## Demo
 
